@@ -1,16 +1,43 @@
 import React from "react";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+import useAdmin from "../hooks/useAdmin";
 
 const Navbar = ({ children }) => {
+  const [admin] = useAdmin();
   const [dark, setDark] = useState(false);
+  const { pathname } = useLocation();
+  // console.log(pathname);
   return (
     <div data-theme={dark ? "dark" : "light"}>
       <div class="drawer drawer-end">
         <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
+
         <div class="drawer-content flex flex-col">
           {/* <!-- Navbar --> */}
           <div class="w-full navbar bg-base-100 fixed top-0 z-10 lg:px-20">
+            {pathname.includes("dashboard") && (
+              <label
+                tabindex="0"
+                class="btn btn-ghost btn-circle lg:hidden"
+                for="my-drawer-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h7"
+                  />
+                </svg>
+              </label>
+            )}
             <div class="flex-1 px-2 mx-2 text-2xl">Clean Co.</div>
             <div class="flex-none lg:hidden">
               <label for="my-drawer-3" class="btn btn-square btn-ghost">
@@ -37,6 +64,13 @@ const Navbar = ({ children }) => {
                     Home
                   </NavLink>
                 </li>
+                {admin && (
+                  <li className="py-1">
+                    <NavLink to="/dashboard/add-service" className="rounded-lg">
+                      DashBoard
+                    </NavLink>
+                  </li>
+                )}
                 <li className="py-1">
                   <NavLink to="/about" className="rounded-lg">
                     About
@@ -105,14 +139,49 @@ const Navbar = ({ children }) => {
         </div>
         <div class="drawer-side">
           <label for="my-drawer-3" class="drawer-overlay"></label>
+
           <ul class="menu p-4 overflow-y-auto w-80 bg-base-100">
             {/* <!-- Sidebar content here --> */}
-            <li>
-              <a>Sidebar Item 1</a>
+            <li className="py-1">
+              <NavLink to="/" className="rounded-lg">
+                Home
+              </NavLink>
             </li>
-            <li>
-              <a>Sidebar Item 2</a>
+
+            <li className="py-1">
+              <NavLink to="/about" className="rounded-lg">
+                About
+              </NavLink>
             </li>
+            <li className="py-1">
+              <NavLink to="/services" className="rounded-lg">
+                Services
+              </NavLink>
+            </li>
+            <li className="py-1">
+              <NavLink to="/contact" className="rounded-lg">
+                Contact
+              </NavLink>
+            </li>
+            <li className="py-1">
+              <NavLink to="/login" className="rounded-lg">
+                Login
+              </NavLink>
+            </li>
+            <div
+              tabindex="0"
+              class="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box"
+            >
+              <div class="collapse-title text-xl font-medium">Book Now</div>
+              <div class="collapse-content">
+                <li>
+                  <a>Pre Book</a>
+                </li>
+                <li>
+                  <a>Post Book</a>
+                </li>
+              </div>
+            </div>
           </ul>
         </div>
       </div>
